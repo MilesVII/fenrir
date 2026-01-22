@@ -19,16 +19,28 @@ export default {
 				}
 			});
 		}
+		if (request.url.includes("neat/")) {
+			const [, id] = request.url.split("neat/");
+			const value = await env.headache_kv.get(id);
+			if (!value) return new Response(null, { status: 404 });
+			// @ts-ignore
+			const content = JSON.parse(value)?.messages?.find(({ role }) => role === "system")?.content
+			if (!content) return new Response(null, { status: 403 });
+			return new Response(content);
+		}
 
 		const id = crypto.randomUUID();
 		await env.headache_kv.put(id, await request.text(), { expirationTtl: 10 * 60 });
 
 		const time = Math.floor(Date.now() / 1000);
 		const url = request.url;
-		const link = `${url.endsWith("/") ? url : (url + "/")}get/${id}`;
+		const link = (ep: string) => `${url.endsWith("/") ? url : (url + "/")}${ep}/${id}`;
+		const getLink = link("get");
+		const neatLink = link("neat");
 		const payload = [
-			`Done! Request is saved at [${link}](${link}) and will be removed in 10 minutes.\n\n`,
-			`Check the first system message to get the definiton`
+			`Done! Request is saved and will be removed in 10 minutes.\n\n`,
+			`[Parsed system prompt](${neatLink})\n\n`,
+			`[Raw request data](${getLink})`
 		];
 		const encoder = new TextEncoder();
 

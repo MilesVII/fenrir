@@ -7,7 +7,7 @@ A sniffer proxy for Janitor AI. Basically a (barely) OpenAI-compatible endpoint 
 
 ```
 Model Name: anything
-Proxy URL: `https://fenrir.milesseventh.workers.dev`
+Proxy URL: https://fenrir.milesseventh.workers.dev
 API Key: anything
 ```
 

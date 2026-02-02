@@ -17,7 +17,7 @@ API Key: anything
 * Follow the link in the response
 
 ## On ethics / piracy / Janitor ToS
-Couldn't care less. I don't want my waifus vendor-locked.
+Couldn't care less. I don't want my waifus vendor-locked. Consider it a fair use.
 
 ## Oh by the way
 Check out [Ägir](https://github.com/MilesVII/agir), my own RP frontend that kinda lowkey fucks

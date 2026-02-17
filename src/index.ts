@@ -39,8 +39,8 @@ export default {
 		const neatLink = link("neat");
 		const payload = [
 			`Done! Request is saved and will be removed in 10 minutes.\n\n`,
-			`[Parsed system prompt](${neatLink})\n\n`,
-			`[Raw request data](${getLink})`
+			`[Parsed system prompt](${neatLink}) (\`${neatLink}\`)\n\n`,
+			`[Raw request data](${getLink}) (\`${getLink}\`)`
 		];
 		const encoder = new TextEncoder();
 

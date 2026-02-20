@@ -1,6 +1,8 @@
 # Fenrir
 A sniffer proxy for Janitor AI. Basically a (barely) OpenAI-compatible endpoint that stores incoming requests for a short time
 
+[JannyAI is a better alternative though](https://jannyai.com)
+
 ## How to use
 * Open a chat with character on Janitor AI
 * Add a proxy config:

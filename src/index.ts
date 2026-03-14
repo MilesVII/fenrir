@@ -3,7 +3,7 @@ const corsHeaders = {
 	"Access-Control-Allow-Origin": "*",
 	"Access-Control-Allow-Methods": "GET,POST,OPTIONS",
 	"Access-Control-Allow-Headers": "Authorization,User-Agent,X-Api-Key,X-CSRF-Token,X-Requested-With,Accept,Accept-Version,Content-Length,Content-MD5,Content-Type,Date,X-Api-Version,HTTP-Referer,X-Windowai-Title,X-Openrouter-Title,X-Title,X-Stainless-Lang,X-Stainless-Package-Version,X-Stainless-OS,X-Stainless-Arch,X-Stainless-Runtime,X-Stainless-Runtime-Version,X-Stainless-Retry-Count,X-Stainless-Timeout,X-Stainless-Helper-Method,Protection-Key,traceparent,tracestate,b3"
-}
+};
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
@@ -11,6 +11,31 @@ export default {
 			return new Response(null, {
 				headers: corsHeaders
 			});
+		if (request.url.includes("steel/")) {
+			const [, url] = request.url.split("steel/");
+
+			if (!url) {
+				return new Response("Missing 'url' parameter", { status: 400 });
+			}
+
+			try {
+				const response = await fetch(decodeURIComponent(url), {
+					headers: {
+						"User-Agent": "Cloudflare-Worker-Proxy",
+					},
+				});
+
+				const newResponse = new Response(response.body, response);
+
+				for (const [name, value] of Object.entries(corsHeaders))
+					newResponse.headers.set(name, value);
+				newResponse.headers.set("Content-Type", "text/html; charset=utf-8");
+
+				return newResponse;
+			} catch (e) {
+				return new Response("Failed to fetch target URL", { status: 500 });
+			}
+		}
 		if (request.url.includes("get/")) {
 			const [, id] = request.url.split("get/");
 			return new Response(await env.headache_kv.get(id), {

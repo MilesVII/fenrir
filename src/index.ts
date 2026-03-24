@@ -133,12 +133,14 @@ async function armory(request: Request, env: Env) {
 }
 
 async function armoryMeta(env: Env) {
-	const value = await env.headache_kv.get("armory-meta", "json");
+	const value = await env.headache_kv.get("armory-meta", "json") as null | any[];
 	return new Response(
 		JSON.stringify({
+			name: "Fenrir armory (default)",
 			pages: {
 				current: 0,
-				total: 1,
+				totalItems: value?.length ?? 0,
+				totalPages: 1,
 				perpage: 100
 			},
 			items: value ?? []

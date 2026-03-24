@@ -13,12 +13,12 @@ export default {
 			});
 
 		const url = new URL(request.url);
-		if (url.pathname.includes("/steel"))       return steel(request);
-		if (url.pathname.includes("/get"))         return get(request, env);
-		if (url.pathname.includes("/neat"))        return neat(request, env);
-		if (url.pathname.includes("/armory"))      return armory(request, env);
-		if (url.pathname.includes("/armory-meta")) return armoryMeta(env);
-		return main(request, env);
+		if (url.pathname.includes("/steel"))       return await steel(request);
+		if (url.pathname.includes("/get"))         return await get(request, env);
+		if (url.pathname.includes("/neat"))        return await neat(request, env);
+		if (url.pathname.includes("/armory-meta")) return await armoryMeta(env);
+		if (url.pathname.includes("/armory"))      return await armory(request, env);
+		return await main(request, env);
 	},
 } satisfies ExportedHandler<Env>;
 

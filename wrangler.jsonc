@@ -16,7 +16,11 @@
 			"id": "fdd4dc537bd24947ad82481aaf197af0",
 			"remote": true
 		}
-	]
+	],
+	"assets": {
+		"directory": "./assets",
+		"binding": "assets"
+	}
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

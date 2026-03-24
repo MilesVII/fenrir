@@ -13,10 +13,11 @@ export default {
 			});
 
 		const url = new URL(request.url);
-		if (url.pathname.includes("/steel"))  return steel(request);
-		if (url.pathname.includes("/get"))    return get(request, env);
-		if (url.pathname.includes("/neat"))   return neat(request, env);
-		if (url.pathname.includes("/armory")) return armory(request, env);
+		if (url.pathname.includes("/steel"))       return steel(request);
+		if (url.pathname.includes("/get"))         return get(request, env);
+		if (url.pathname.includes("/neat"))        return neat(request, env);
+		if (url.pathname.includes("/armory"))      return armory(request, env);
+		if (url.pathname.includes("/armory-meta")) return armoryMeta(env);
 		return main(request, env);
 	},
 } satisfies ExportedHandler<Env>;
@@ -118,17 +119,27 @@ async function main(request: Request, env: Env) {
 }
 
 async function armory(request: Request, env: Env) {
-	// type ArmoryItem = {
-	// 	id: string,
-	// 	summary: string,
-	// 	icon: string,
-	// 	url: string,
-	// 	lastUpdate: string
-	// };
+	const [, id] = request.url.split("armory/");
 
-	return new Response(JSON.stringify([]), {
-		headers: {
-			"Content-Type": "application/json"
+	return new Response(
+		await env.headache_kv.get(`armory-${id}`),
+		{
+			headers: {
+				"Content-Type": "application/json",
+				...corsHeaders
+			}
 		}
-	});
+	);
+}
+
+async function armoryMeta(env: Env) {
+	return new Response(
+		await env.headache_kv.get("armory-meta"),
+		{
+			headers: {
+				"Content-Type": "application/json",
+				...corsHeaders
+			}
+		}
+	);
 }

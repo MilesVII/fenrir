@@ -133,8 +133,16 @@ async function armory(request: Request, env: Env) {
 }
 
 async function armoryMeta(env: Env) {
+	const value = await env.headache_kv.get("armory-meta", "json");
 	return new Response(
-		await env.headache_kv.get("armory-meta"),
+		JSON.stringify({
+			pages: {
+				current: 0,
+				total: 1,
+				perpage: 100
+			},
+			items: value ?? []
+		}),
 		{
 			headers: {
 				"Content-Type": "application/json",
